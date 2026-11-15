@@ -876,7 +876,8 @@ $('printReport').onclick=()=>window.print();
  $('metrics').innerHTML=labels.map(([l,k])=>{const score=Math.max(0,Math.min(100,Math.round(Number(r.scores?.[k])||0))),rank=getRank(score);return '<div class="stat"><b>'+score+'<small style="font-size:10px"> / 100</small></b><span>'+l+'</span><strong class="metric-grade">'+rank+'</strong></div>'}).join('');
  $('good').innerHTML=(r.good_points||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('');
  $('advice').innerHTML=(r.improvements||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('');
- saveAndRenderProgress(r);\n buildDetailedDiagnosis(r);
+ saveAndRenderProgress(r);
+ buildDetailedDiagnosis(r);
  $('speakers').innerHTML='<p><b>'+escapeHtml($('name1').value)+'：</b>'+escapeHtml(r.speaker1_comment||'')+'</p>'+($('playMode')?.value==='solo'?'':'<p><b>'+escapeHtml($('name2').value)+'：</b>'+escapeHtml(r.speaker2_comment||'')+'</p>');
 }
 $('openSettings').onclick=()=>{$('setup').style.display='none';$('record').classList.remove('show');$('result').classList.remove('show');$('settings').style.display='block'};$('closeSettings').onclick=()=>{$('settings').style.display='none';$('setup').style.display='block'};
@@ -956,7 +957,9 @@ $('adminLogo').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e
    document.getElementById('maintenanceText').textContent=shared.maintenanceMessage||'ただいまメンテナンスを行っています。';
    screen.style.display='flex';app.style.display='none';return;
   }
-  const f=shared.features||{};\n  const preset=shared.design?.themePreset;\n  if(['classic','disney25'].includes(preset))document.body.dataset.tiTheme=preset;
+  const f=shared.features||{};
+  const preset=shared.design?.themePreset;
+  if(['classic','disney25'].includes(preset))document.body.dataset.tiTheme=preset;
   const hide=(enabled,selector)=>{if(enabled===false)document.querySelectorAll(selector).forEach(el=>el.style.display='none')};
   hide(f['Talk Ready'],'#tabTalkReady, #talkReadyPanel');
   hide(f['会話分析'],'#tabAnalysis, #setup');
