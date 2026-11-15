@@ -232,7 +232,8 @@ export default {
       for (const key of ["good_points", "improvements"])
         if (!Array.isArray(result[key])) result[key] = [];
       for (const key of ["grade", "summary", "speaker1_comment", "speaker2_comment"])
-        if (typeof result[key] !== "string") result[key] = "";\n      if (typeof result.detailed_diagnosis !== "string") result.detailed_diagnosis = result.summary;
+        if (typeof result[key] !== "string") result[key] = "";
+      if (typeof result.detailed_diagnosis !== "string") result.detailed_diagnosis = result.summary;
       // KV counters are approximate under simultaneous requests; keep the monthly cap conservative.
       await env.TALK_INSIGHT_KV.put(usageKey, String(used + 1), { expirationTtl: 60 * 60 * 24 * 40 });
       return json({ ok: true, result, usage: { used: used + 1, limit } });
