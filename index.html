@@ -526,6 +526,27 @@ body{
 .grade-copy{min-width:0}.grade-kicker{font-size:10px;font-weight:900;letter-spacing:2px;color:#526da8}.grade-title{font-size:21px;font-weight:900;margin:5px 0;color:#263e7d}.grade-note{font-size:11px;line-height:1.8;color:#53627c}
 .stat .metric-grade{display:inline-block;margin-top:7px;padding:4px 8px;border-radius:20px;background:rgba(76,110,208,.12);font-size:11px;font-weight:900;color:#344f9b}
 @media(max-width:520px){.grade-hero{gap:14px;padding:15px}.grade-emblem{width:82px;height:82px;flex-basis:82px;border-radius:22px;font-size:36px}.grade-title{font-size:17px}.grade-note{font-size:10px}}
+
+/* v2.4.0 — Progress, Radar & Achievements */
+.progress-suite{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.progress-card{padding:16px;border:1px solid rgba(255,255,255,.75);border-radius:17px;background:rgba(255,255,255,.3)}
+.progress-card h3{font-size:11px;letter-spacing:1px;color:#354d91;margin:0 0 10px}
+.radar-wrap{display:grid;place-items:center;min-height:220px}
+.radar-wrap svg{width:min(100%,270px);height:auto;overflow:visible}
+.progress-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.progress-kpi{padding:10px;border-radius:12px;background:rgba(255,255,255,.42)}
+.progress-kpi b{display:block;font-size:21px;color:#344f9b}
+.progress-kpi span{font-size:9px;color:#536078}
+.progress-delta{font-size:11px;color:#536078;line-height:1.7;margin-top:10px}
+.history-list{display:grid;gap:7px}
+.history-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 10px;border-radius:11px;background:rgba(255,255,255,.4);font-size:10px;color:#46536d}
+.history-item b{font-size:13px;color:#344f9b}
+.history-empty{font-size:11px;line-height:1.8;color:#59677e}
+.achievement-list{display:flex;flex-wrap:wrap;gap:8px}
+.achievement{padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.72);font-size:10px;color:#435681}
+.achievement.locked{opacity:.42;filter:grayscale(1)}
+@media(max-width:620px){.progress-suite{grid-template-columns:1fr}.radar-wrap{min-height:190px}}
+
 </style></head>
 <body><div id="maintenanceScreen" style="display:none;position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#07152b,#0b2d52);color:#e7f4ff;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:'Noto Sans JP',sans-serif"><div style="max-width:560px"><div style="font:700 11px monospace;letter-spacing:4px;color:#64caff">TALK INSIGHT / SYSTEM MAINTENANCE</div><div style="font-size:42px;margin:22px">⚙</div><h1 style="font-size:26px">メンテナンス中</h1><p id="maintenanceText" style="line-height:2;color:#b8d4f2">ただいまメンテナンスを行っています。</p><p style="font:10px monospace;color:#7298c0">PLEASE TRY AGAIN LATER</p></div></div><main class="app">
 <header class="nav"><div class="nav-orbit orbit-one" aria-hidden="true"></div><div class="nav-orbit orbit-two" aria-hidden="true"></div><div class="brand"><div class="logo" id="adminLogo" role="button" tabindex="0" aria-label="TALK INSIGHT">TI</div><div><strong>TALK INSIGHT</strong><small>CONVERSATION INTELLIGENCE</small></div></div><div class="nav-actions"><button class="tutorial-help" id="openTutorial" type="button">使い方</button><button class="settings-toggle" id="openSettings" aria-label="設定を開く"><span class="settings-glyph" aria-hidden="true"></span></button><div class="livepill">SYSTEM READY</div></div></header>
@@ -552,7 +573,14 @@ body{
 <div id="transcript" class="transcript"><div class="empty">会話の記録がここに表示されます。</div></div>
 <div class="record-controls"><button id="finish" class="stop">会話を終了して採点</button><button id="cancel" class="softbtn">キャンセル</button></div></section>
 <section id="result" class="glass panel result"><div class="heading">04 / CONVERSATION REPORT</div><div id="aiStatus" class="rank">LOCAL ANALYZING</div><div class="scoreline"><div class="score" id="total">--<small> / 100</small></div><div style="text-align:right"><div id="grade" class="rank">OVERALL GRADE</div><div id="names" style="font-size:12px;color:var(--muted);margin-top:6px"></div></div></div>
-<div class="grade-hero"><div class="grade-emblem" id="gradeEmblem">--</div><div class="grade-copy"><div class="grade-kicker">YOUR CONVERSATION RANK</div><div class="grade-title" id="gradeTitle">評価を準備しています</div><div class="grade-note" id="gradeNote">総合スコアと5つの観点からランクを表示します。</div></div></div><div class="resultgrid" id="metrics"></div><div class="feedback"><h3>01 / SUMMARY　総合講評</h3><p id="summary">分析結果を待っています。</p></div><div class="feedback"><h3>02 / STRENGTHS　良かったところ</h3><ul id="good"></ul></div><div class="feedback"><h3>03 / NEXT STEP　改善アドバイス</h3><ul id="advice"></ul></div><div class="feedback"><h3>04 / SPEAKER REVIEW　話者別コメント</h3><div id="speakers"></div></div><div class="feedback"><h3>05 / TRANSCRIPT　会話ログ</h3><div id="log" style="font-size:11px;line-height:1.9;white-space:pre-wrap;max-height:220px;overflow:auto"></div></div><div class="feedback"><h3>06 / CONVERSATION REPLAY　会話リプレイ</h3><p>録音音声ではなく、文字起こしを発言順・経過時間に沿って再生します。</p><div class="replay-screen" id="replayScreen"><span>REPLAY READY</span><b id="replayText">会話ログを時間順に振り返れます。</b><small id="replayMeta">00:00 / 00:00</small></div><div class="record-controls"><button class="softbtn" id="replayStart">リプレイ開始</button><button class="softbtn" id="replayStop">停止</button></div></div><div class="feedback"><h3>07 / AI COACH　会話コーチ</h3><p id="coachIntro">会話の分析結果から、次に試すと効果的な練習を提案します。</p><ul id="coachList"></ul></div><div class="feedback"><h3>08 / SKILL PROFILE　会話スキル診断</h3><p>5つの観点から、今回の会話スキルを診断します。</p><div id="skillProfile" class="skill-profile"></div></div><div class="feedback"><h3>09 / MISSION RESULT　ミッション結果</h3><p id="missionResult">ミッションの達成状況を表示します。</p></div>
+<div class="grade-hero"><div class="grade-emblem" id="gradeEmblem">--</div><div class="grade-copy"><div class="grade-kicker">YOUR CONVERSATION RANK</div><div class="grade-title" id="gradeTitle">評価を準備しています</div><div class="grade-note" id="gradeNote">総合スコアと5つの観点からランクを表示します。</div></div></div><div class="resultgrid" id="metrics"></div>
+<div class="progress-suite">
+<div class="progress-card"><h3>SKILL RADAR / 5項目バランス</h3><div id="skillRadar" class="radar-wrap" aria-label="5項目の会話力レーダーチャート"></div></div>
+<div class="progress-card"><h3>GROWTH TRACK / 成長記録</h3><div id="progressSummary" class="progress-summary"></div><p id="progressDelta" class="progress-delta">今回の結果を保存すると、ここに成長記録が表示されます。</p></div>
+</div>
+<div class="feedback"><h3>10 / HISTORY　最近の会話記録</h3><div id="scoreHistory" class="history-list"><p class="history-empty">採点結果がここに保存されます（この端末のブラウザ内）。</p></div></div>
+<div class="feedback"><h3>11 / ACHIEVEMENTS　実績・称号</h3><div id="achievementList" class="achievement-list"></div></div>
+<div class="feedback"><h3>01 / SUMMARY　総合講評</h3><p id="summary">分析結果を待っています。</p></div><div class="feedback"><h3>02 / STRENGTHS　良かったところ</h3><ul id="good"></ul></div><div class="feedback"><h3>03 / NEXT STEP　改善アドバイス</h3><ul id="advice"></ul></div><div class="feedback"><h3>04 / SPEAKER REVIEW　話者別コメント</h3><div id="speakers"></div></div><div class="feedback"><h3>05 / TRANSCRIPT　会話ログ</h3><div id="log" style="font-size:11px;line-height:1.9;white-space:pre-wrap;max-height:220px;overflow:auto"></div></div><div class="feedback"><h3>06 / CONVERSATION REPLAY　会話リプレイ</h3><p>録音音声ではなく、文字起こしを発言順・経過時間に沿って再生します。</p><div class="replay-screen" id="replayScreen"><span>REPLAY READY</span><b id="replayText">会話ログを時間順に振り返れます。</b><small id="replayMeta">00:00 / 00:00</small></div><div class="record-controls"><button class="softbtn" id="replayStart">リプレイ開始</button><button class="softbtn" id="replayStop">停止</button></div></div><div class="feedback"><h3>07 / AI COACH　会話コーチ</h3><p id="coachIntro">会話の分析結果から、次に試すと効果的な練習を提案します。</p><ul id="coachList"></ul></div><div class="feedback"><h3>08 / SKILL PROFILE　会話スキル診断</h3><p>5つの観点から、今回の会話スキルを診断します。</p><div id="skillProfile" class="skill-profile"></div></div><div class="feedback"><h3>09 / MISSION RESULT　ミッション結果</h3><p id="missionResult">ミッションの達成状況を表示します。</p></div>
 <div class="feedback" id="manualAI" style="display:none"><h3>CHATGPT HANDOFF / API不要の採点</h3><p>①採点指示をコピー → ②ChatGPTを開いて貼り付け → ③返ってきたJSONを下に貼り付けて反映。</p><div class="record-controls"><button class="softbtn" id="copyPrompt">採点指示をコピー</button><button class="softbtn" id="openChatGPT">ChatGPTを開く</button></div><textarea id="aiReply" rows="7" placeholder="ChatGPTの回答（JSON）をここに貼り付け" style="width:100%;margin-top:12px;padding:13px;border:1px solid rgba(255,255,255,.8);border-radius:13px;background:rgba(255,255,255,.48);font:12px monospace;color:var(--ink)"></textarea><button class="primary" id="applyAI" style="margin-top:10px">採点結果を反映</button><textarea id="promptText" aria-label="採点指示" readonly style="position:absolute;left:-9999px;top:-9999px"></textarea></div><button class="primary" id="retry" style="margin-top:18px">NEW CONVERSATION</button></section>
 <section id="settings" class="glass panel settings-screen" style="display:none"><div class="settings-head"><div><div class="heading">SYSTEM PREFERENCES</div><h2 style="margin:0 0 5px">設定</h2><p class="hint" style="margin:0">アプリの動作や情報を管理します。</p></div><button class="softbtn" id="closeSettings">← 戻る</button></div><div class="settings-card"><h3>評価方法</h3><p>通常はGemini AIが会話ログを読み取り、会話の長さや文字起こしの誤りにも配慮して評価します。AIに接続できない場合は、ブラウザ内のルールベース採点に自動で切り替わります。</p><div class="settings-line"><span>通常の採点</span><b>Gemini AI（Cloudflare Worker経由）</b></div><div class="settings-line"><span>AI利用不可の場合</span><b>ローカル自動分析</b></div><div class="settings-line"><span>AI採点時の送信内容</span><b>会話ログ・話者名・テーマ・時間</b></div><div class="settings-line"><span>AIモデル</span><b>Gemini 2.5 Flash（初期設定）</b></div><p style="margin-top:10px">AI採点では会話ログがCloudflare Workerを経由してGemini APIへ送信されます。ローカル採点に切り替わった場合は外部AIへ送信せず、発言回数・質問・反応表現・文章の特徴などを使った簡易的な参考評価になります。</p><h3 style="margin-top:18px">評価項目</h3><p>自然な表現／対話のバランス／質問する力／聞いて返す力／話題を広げる力の5項目を、それぞれ100点満点で評価します。総合点も100点満点です。</p><p>ランクは総合点・各項目とも同じ基準で表示します。</p><div class="settings-line"><span>S</span><b>95〜100点</b></div><div class="settings-line"><span>A+ / A / A−</span><b>90〜94 / 85〜89 / 80〜84点</b></div><div class="settings-line"><span>B+ / B / B−</span><b>75〜79 / 70〜74 / 65〜69点</b></div><div class="settings-line"><span>C+ / C / C−</span><b>60〜64 / 55〜59 / 50〜54点</b></div><div class="settings-line"><span>D+ / D / D−</span><b>45〜49 / 40〜44 / 35〜39点</b></div><div class="settings-line"><span>F</span><b>0〜34点</b></div></div><div class="settings-card"><h3>更新履歴</h3>
 <div class="release-list" aria-label="更新履歴"><div class="release"><time>2026.11.13 · v2.3.1</time><b>アプリ情報と評価方法を最新化</b><ul><li>Gemini AIによる通常採点とローカル採点への切替を明記</li><li>会話ログの送信先・送信内容を明記</li><li>5つの評価項目とランク基準を掲載</li></ul></div><div class="release"><time>2026.11.13 · v2.3.0</time><b>評価レポートをランク制に刷新</b><ul><li>S〜Fの細かなランク表示に対応</li><li>総合ランクと5項目のランクを表示</li><li>AI採点・通常採点の項目別スコアを100点満点に統一</li></ul></div><div class="release"><time>2026.11.12 · v2.2.0</time><b>開発者向け管理コンソールを追加</b><ul><li>ロゴ5回クリックで管理者メニューを起動</li><li>機能・採点・デザイン・データ管理の初期画面を追加</li><li>ローカル設定のバックアップと開発者診断に対応</li></ul></div>
@@ -649,7 +677,7 @@ function buildCoach(r){
 }
 function buildSkillProfile(r){
  const labels=[['自然な表現','naturalness'],['対話のバランス','balance'],['質問する力','interaction'],['聞いて返す力','listening'],['話題を広げる力','development']];
- $('skillProfile').innerHTML=labels.map(([label,key])=>{const value=Number(r.scores?.[key]??0)*5;return '<div class="skill-row"><span>'+label+'</span><div class="bar-track"><i style="width:'+Math.max(0,Math.min(100,value))+'%"></i></div><strong>'+Math.round(value)+'</strong></div>'}).join('');
+ $('skillProfile').innerHTML=labels.map(([label,key])=>{const value=Number(r.scores?.[key]??0);return '<div class="skill-row"><span>'+label+'</span><div class="bar-track"><i style="width:'+Math.max(0,Math.min(100,value))+'%"></i></div><strong>'+Math.round(value)+'</strong></div>'}).join('');
 }
 
 function stopRecognition(){if(recognition){try{recognition.stop()}catch(e){}recognition=null}}
@@ -772,6 +800,41 @@ function getRank(score){
  if(n>=45)return 'D+';if(n>=40)return 'D';if(n>=35)return 'D-';return 'F';
 }
 function rankLabel(rank){return ({S:'EXCELLENT','A+':'OUTSTANDING',A:'GREAT','A-':'VERY GOOD','B+':'GOOD',B:'SOLID','B-':'PROMISING','C+':'FAIR',C:'DEVELOPING','C-':'NEEDS PRACTICE','D+':'BEGINNER',D:'KEEP GOING','D-':'EARLY STAGE',F:'REBUILD'})[rank]||'KEEP PRACTICING'}
+
+const HISTORY_KEY='talkInsightScoreHistoryV1';
+function readScoreHistory(){try{const v=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');return Array.isArray(v)?v:[]}catch(e){return[]}}
+function renderSkillRadar(scores){
+ const keys=['naturalness','balance','interaction','listening','development'];
+ const labels=['自然さ','バランス','質問','傾聴','展開'];
+ const values=keys.map(k=>Math.max(0,Math.min(100,Number(scores?.[k])||0)));
+ const cx=130,cy=118,r=82;
+ const point=(i,scale)=>{const a=-Math.PI/2+i*2*Math.PI/5;return [cx+Math.cos(a)*r*scale,cy+Math.sin(a)*r*scale]};
+ const polygon=scale=>keys.map((_,i)=>point(i,scale).map(n=>n.toFixed(1)).join(',')).join(' ');
+ let svg='<svg viewBox="0 0 260 245" role="img" aria-label="5項目のスコア">';
+ [0.25,0.5,0.75,1].forEach(v=>{svg+='<polygon points="'+polygon(v)+'" fill="none" stroke="#8192b5" stroke-opacity=".35" stroke-width="1"/>'});
+ keys.forEach((_,i)=>{const p=point(i,1);svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="#8192b5" stroke-opacity=".35"/>'});
+ const pts=values.map((v,i)=>point(i,v/100).map(n=>n.toFixed(1)).join(',')).join(' ');
+ svg+='<polygon points="'+pts+'" fill="#5279ed" fill-opacity=".24" stroke="#405fca" stroke-width="2"/>';
+ values.forEach((v,i)=>{const p=point(i,v/100);svg+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3.5" fill="#405fca"/>';const lp=point(i,1.23);svg+='<text x="'+lp[0]+'" y="'+(lp[1]+3)+'" text-anchor="middle" font-size="9" fill="#46536d">'+labels[i]+'</text>'});
+ svg+='</svg>'; $('skillRadar').innerHTML=svg;
+}
+function saveAndRenderProgress(result){
+ const scores=result.scores||{};
+ const record={date:new Date().toISOString(),score:Math.max(0,Math.min(100,Math.round(Number(result.total_score)||0))),grade:getRank(result.total_score),theme:$('theme').value==='その他'?$('customTheme').value:$('theme').value,mode:$('playMode').value,scores:{naturalness:Number(scores.naturalness)||0,balance:Number(scores.balance)||0,interaction:Number(scores.interaction)||0,listening:Number(scores.listening)||0,development:Number(scores.development)||0}};
+ let history=readScoreHistory();history.unshift(record);history=history.slice(0,30);
+ try{localStorage.setItem(HISTORY_KEY,JSON.stringify(history))}catch(e){console.warn('Progress history could not be saved',e)}
+ const best=history.length?Math.max(...history.map(x=>x.score)):record.score;
+ const avg=history.length?Math.round(history.reduce((n,x)=>n+x.score,0)/history.length):record.score;
+ const previous=history[1];
+ $('progressSummary').innerHTML='<div class="progress-kpi"><b>'+best+'</b><span>自己ベスト</span></div><div class="progress-kpi"><b>'+avg+'</b><span>平均スコア</span></div><div class="progress-kpi"><b>'+history.length+'</b><span>保存した記録</span></div><div class="progress-kpi"><b>'+record.score+'</b><span>今回のスコア</span></div>';
+ $('progressDelta').textContent=previous?'前回比：'+(record.score-previous.score>=0?'+':'')+(record.score-previous.score)+'点。'+(record.score>previous.score?'前回より成長！':record.score===previous.score?'前回と同じスコアです。':'次回は弱点項目を1つ意識してみよう。'):'今回が最初の記録です。次回からスコアの変化を比較できます。';
+ $('scoreHistory').innerHTML=history.slice(0,5).map(x=>'<div class="history-item"><span>'+new Date(x.date).toLocaleDateString('ja-JP')+' · '+escapeHtml(x.theme||'フリートーク')+'</span><b>'+x.score+'点 / '+escapeHtml(x.grade)+'</b></div>').join('');
+ const count=history.length,earned=[count>=1,count>=5,best>=80,best>=95,history.some(x=>x.scores?.interaction>=80),history.some(x=>x.scores?.listening>=80)];
+ const titles=['初トーク達成','継続チャレンジャー','80点突破','Sランク級','質問マスター','聞き上手'];
+ $('achievementList').innerHTML=titles.map((t,i)=>'<span class="achievement '+(earned[i]?'':'locked')+'">'+(earned[i]?'🏅 ':'🔒 ')+t+'</span>').join('');
+ renderSkillRadar(scores);
+}
+
 function renderAI(r){
  const total=Math.max(0,Math.min(100,Math.round(Number(r.total_score)||0))),overall=getRank(total);
  $('aiStatus').textContent='EVALUATION COMPLETE';$('total').innerHTML=total+'<small> / 100</small>';
@@ -783,6 +846,7 @@ function renderAI(r){
  $('metrics').innerHTML=labels.map(([l,k])=>{const score=Math.max(0,Math.min(100,Math.round(Number(r.scores?.[k])||0))),rank=getRank(score);return '<div class="stat"><b>'+score+'<small style="font-size:10px"> / 100</small></b><span>'+l+'</span><strong class="metric-grade">'+rank+'</strong></div>'}).join('');
  $('good').innerHTML=(r.good_points||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('');
  $('advice').innerHTML=(r.improvements||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('');
+ saveAndRenderProgress(r);
  $('speakers').innerHTML='<p><b>'+escapeHtml($('name1').value)+'：</b>'+escapeHtml(r.speaker1_comment||'')+'</p>'+($('playMode')?.value==='solo'?'':'<p><b>'+escapeHtml($('name2').value)+'：</b>'+escapeHtml(r.speaker2_comment||'')+'</p>');
 }
 $('openSettings').onclick=()=>{$('setup').style.display='none';$('record').classList.remove('show');$('result').classList.remove('show');$('settings').style.display='block'};$('closeSettings').onclick=()=>{$('settings').style.display='none';$('setup').style.display='block'};
